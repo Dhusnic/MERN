@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
 //to encrypt the password for database
 import bcryptjs from 'bcryptjs';
-export const signup=async(req,res)=>{
+import { errorHandler } from "../utils/error.js";
+export const signup=async(req,res,next)=>{
     const{username,email,password}=req.body;
     const hashedPassword=bcryptjs.hashSync(password,10);
     const newUser=new User({username,email,password:hashedPassword});
@@ -12,6 +13,8 @@ export const signup=async(req,res)=>{
     }
     catch(error)
     {
-        res.status(400).json({message:error.message});
+        // next(error);
+        //After using utils File;
+        next(errorHandler(300,"Something Went Wrong!"));
     }
-};
+}; 
